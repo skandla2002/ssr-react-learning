@@ -1,8 +1,8 @@
 const paths = require("./paths");
 const getCSSModuleLocalIdent = require("react-dev-utils/getCSSModuleLocalIdent"); // CSS Module의 고유 className을 만들때 필요한 옵션
-const nodeExternals = require('webpack-node-externals)');
-const webpack = require('webpack');
-const getClientEnvironment = require('./env');
+const nodeExternals = require("webpack-node-externals");
+const webpack = require("webpack");
+const getClientEnvironment = require("./env");
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
@@ -57,7 +57,7 @@ module.exports = {
           {
             test: cssModuleRegex,
             loader: require.resolve("css-loader"),
-            optiosn: {
+            options: {
               modules: true,
               exportOnlyLocals: true,
               getLocalIdet: getCSSModuleLocalIdent
@@ -95,22 +95,22 @@ module.exports = {
           },
           // url-loader를 위한 설정
           {
-            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/]
-            loader: require.resolve('url-loader'),
+            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+            loader: require.resolve("url-loader"),
             options: {
               emitFile: false, // 파일을 따로 저장하지 않는 옵션
               limit: 10000, // 원래는 9.76kb가 넘어가면 파일로 저장하는데
               // emitFile 값이 false일 때는 경로만 준비하고 파일은 저장하지 않습니다.
-              name: 'static/media/[name].[hash:8].[ext]'
+              name: "static/media/[name].[hash:8].[ext]"
             }
           },
           // 위에서 설정된 확장자를 제외한 파일들은 file-loader를 사용 합니다.
           {
-            loader: require.resolve('file-loader'),
+            loader: require.resolve("file-loader"),
             exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
             options: {
               emitFile: false, // 파일을 따로 저장하지 않는 옵션
-              name: 'static/media/[name].[hash:8].[ext]'
+              name: "static/media/[name].[hash:8].[ext]"
             }
           }
         ]
@@ -118,7 +118,7 @@ module.exports = {
     ]
   },
   resolve: {
-    modules: ['node_modules']
+    modules: ["node_modules"]
   },
   externals: [nodeExternals()],
   plugins: [
