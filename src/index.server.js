@@ -6,7 +6,7 @@ import App from "./App";
 import path from "path";
 import fs from "fs";
 
-// asser-manifest.json에서 파일 경로들을 조회합니다.
+// asset-manifest.json에서 파일 경로들을 조회합니다.
 const manifest = JSON.parse(
   fs.readFileSync(path.resolve("./build/asset-manifest.json"), "utf-8")
 );
@@ -24,7 +24,7 @@ function createPage(root) {
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta
       name="viewport"
-      content="width-device-width, initial-scale=1, shrink-to-fix=no"
+      content="width=device-width, initial-scale=1, shrink-to-fix=no"
     />
     <meta name="theme-color" content ="#000000" />
     <title>React App</title>
@@ -39,7 +39,8 @@ function createPage(root) {
     ${chunks}
     <script src="${manifest["main.js"]}"></script>
   </body>
-  </html>`;
+  </html>
+   `;
 }
 
 const app = express();
@@ -58,6 +59,10 @@ const serverRender = (req, res, next) => {
   // res.send(root); // 클라이언트에게 결과물을 응답합니다.
   res.send(createPage(root)); // 클라이언트에게 결과물을 응답합니다.
 };
+
+const serve = express.static(path.resolve("./build"), {
+  index: false // "/" 경로에서 index.html을 보여주지 않도록 설정
+});
 
 app.use(server);
 app.use(serverRender);
