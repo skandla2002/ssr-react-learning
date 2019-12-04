@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import Menu from "./components/Menu";
 import RedPage from "./pages/RedPage";
 import BluePage from "./pages/BluePage";
+import UsersPage from "./containers/UsersContainer";
 import "./App.css";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <hr />
       <Route path="/red" component={RedPage}></Route>
       <Route path="/blue" component={BluePage}></Route>
+      <Route path="/users" component={UsersPage}></Route>
     </div>
   );
 }
