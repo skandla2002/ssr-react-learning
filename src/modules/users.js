@@ -19,6 +19,12 @@ const getUsersFailure = payload => ({
 });
 
 export const getUser = id => ({ type: GET_USER, payload: id });
+const getUserSuccess = data => ({ type: GET_USER_SUCCESS, payload: data });
+const getUserFailure = error => ({
+  type: GET_USERS_FAILURE,
+  payload: error,
+  error: true
+});
 
 export const getUsers = () => async dispath => {
   try {
@@ -32,6 +38,22 @@ export const getUsers = () => async dispath => {
     throw e;
   }
 };
+
+const getUserById = id =>
+  axios.get(`https://jsonplaceholder.typicod.com/users/${id}`);
+
+function* getUserSaga(action) {
+  try {
+    const response = yield call(getUserById, action.payload);
+    yield put(getUserSuccess(response.data));
+  } catch (e) {
+    yield put(getUsersFailure(e));
+  }
+}
+
+export function* usersSaga() {
+  yield takeEvery(GET_USER, getUserSaga);
+}
 
 const initalState = {
   users: null,
@@ -61,6 +83,24 @@ function users(state = initalState, action) {
         ...state,
         loading: { ...state.loading, users: false },
         error: { ...state.error, users: action.payload }
+      };
+    case GET_USER:
+      return {
+        ...state,
+        loading: { ...state.loading, user: true },
+        error: { ...state.error, user: null }
+      };
+    case GET_USER_SUCCESS:
+      return {
+        ...state,
+        loading: { ...state.loading, user: false },
+        user: action.payload
+      };
+    case GET_USER_FAILURE:
+      return {
+        ...state,
+        loading: { ...state.loading, user: false },
+        error: { ...state.error, user: action.payload }
       };
     default:
       return state;
