@@ -5,6 +5,11 @@
   "dependencies": {
     "@babel/core": "7.6.0",
     "@babel/plugin-transform-react-jsx": "^7.7.4",
+    "@babel/plugin-transform-react-jsx-self": "^7.7.4",
+    "@loadable/babel-plugin": "^5.11.0",
+    "@loadable/component": "^5.11.0",
+    "@loadable/server": "^5.11.0",
+    "@loadable/webpack-plugin": "^5.7.1",
     "@svgr/webpack": "4.3.2",
     "@typescript-eslint/eslint-plugin": "^2.2.0",
     "@typescript-eslint/parser": "^2.2.0",
@@ -141,6 +146,9 @@
   "babel": {
     "presets": [
       "react-app"
+    ],
+    "plugins": [
+      "@loadable/babel-plugin"
     ]
   }
 }
