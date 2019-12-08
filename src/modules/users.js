@@ -1,5 +1,4 @@
 import axios from "axios";
-import { dispatch } from "E:/Users/KH-JM/AppData/Local/Microsoft/TypeScript/3.6/node_modules/rxjs/internal/observable/pairs";
 import { call, put, takeEvery } from "redux-saga/effects";
 
 const GET_USERS_PENDING = "users/GET_USERS_PENDING";
@@ -7,7 +6,7 @@ const GET_USERS_SUCCESS = "users/GET_USERS_SUCCESS";
 const GET_USERS_FAILURE = "users/GET_USERS_FAILURE";
 
 const GET_USER = "users/GET_USER";
-const GET_USER_SUCCESS = "users/GET_USER_SUCCEESS";
+const GET_USER_SUCCESS = "users/GET_USER_SUCCESS";
 const GET_USER_FAILURE = "users/GET_USER_FAILURE";
 
 const getUsersPending = () => ({ type: GET_USERS_PENDING });
@@ -21,12 +20,12 @@ const getUsersFailure = payload => ({
 export const getUser = id => ({ type: GET_USER, payload: id });
 const getUserSuccess = data => ({ type: GET_USER_SUCCESS, payload: data });
 const getUserFailure = error => ({
-  type: GET_USERS_FAILURE,
+  type: GET_USER_FAILURE,
   payload: error,
   error: true
 });
 
-export const getUsers = () => async dispath => {
+export const getUsers = () => async dispatch => {
   try {
     dispatch(getUsersPending());
     const response = await axios.get(
@@ -47,7 +46,7 @@ function* getUserSaga(action) {
     const response = yield call(getUserById, action.payload);
     yield put(getUserSuccess(response.data));
   } catch (e) {
-    yield put(getUsersFailure(e));
+    yield put(getUserFailure(e));
   }
 }
 
@@ -55,7 +54,7 @@ export function* usersSaga() {
   yield takeEvery(GET_USER, getUserSaga);
 }
 
-const initalState = {
+const initialState = {
   users: null,
   user: null,
   loading: {
@@ -68,10 +67,14 @@ const initalState = {
   }
 };
 
-function users(state = initalState, action) {
+function users(state = initialState, action) {
   switch (action.type) {
     case GET_USERS_PENDING:
-      return { ...state, loading: { ...state.loading, users: true } };
+      return {
+        ...state,
+        loading: { ...state.loading, users: true },
+        error: { ...state.error, users: null }
+      };
     case GET_USERS_SUCCESS:
       return {
         ...state,
